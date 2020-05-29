@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder/>
+
+    <!--<context:component-scan base-package="com.chenjl.autowire"/>-->
+
+    <!--<bean id="sgtPepers" class="com.chenjl.autowire.SgtPepers"/>-->
+
+    <!--<bean id="cdPlayer" class="com.chenjl.autowire.CDPlayer">-->
+        <!--<constructor-arg ref="sgtPepers"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="cdPlayer" class="com.chenjl.autowire.CDPlayer" c:cd-ref="sgtPepers"/>-->
+    <!--<bean id="cdPlayer" class="com.chenjl.autowire.CDPlayer" c:_-ref="sgtPepers"/>-->
+
+    <!--<bean id="blankDisc" class="com.chenjl.autowire.BlankDisc">-->
+        <!--<constructor-arg value="The Beatles"/>-->
+        <!--<constructor-arg value="Sgt.Pepper's Lonely Hearts Club Band"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="blankDisc" class="com.chenjl.autowire.BlankDisc" c:_0="The Beatles" c:_1="Sgt.Pepper's Lonely Hearts Club Band"/>-->
+
+    <bean id="compactDisc" class="com.chenjl.autowire.BlankDisc">
+        <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band"/>
+        <constructor-arg value="The Beatles"/>
+        <constructor-arg ref="trackList"/>
+            <!--<list>-->
+                <!--<value>Sgt.Pepper's Lonely Hearts Club Band</value>-->
+                <!--<value>With a Little Help From My Friends</value>-->
+            <!--</list>-->
+        <!--</constructor-arg>-->
+    </bean>
+
+    <!--<bean class="com.chenjl.autowire.CDPlayer">-->
+        <!--<property name="cd" ref="compactDisc"/>-->
+    <!--</bean>-->
+    <bean class="com.chenjl.autowire.CDPlayer" p:cd-ref="compactDisc"/>
+
+    <util:list id="trackList">
+        <value>Fixing a Hole</value>
+        <value>Getting better</value>
+    </util:list>
+
+    <bean class="com.chenjl.config.CDPlayerConfig"/>
+
+    <bean id="notepad" class="com.chenjl.config.IceCream" scope="prototype"/>
+
+    <bean id="cart" class="com.chenjl.config.ShopCart" scope="session">
+        <aop:scoped-proxy proxy-target-class="false"/>
+    </bean>
+
+    <bean id = "blankDisc" class="com.chenjl.config.BlankDisc" c:artist="${disk.artist}" c:title="${disk.title}"/>
+
+    <bean id="blankDisc2" class="com.chenjl.config.BlankDisc"
+          c:title="#{systemProperties['disc.title']}"
+          c:artist="#{systemProperties['disc.artist']}"/>
+
+</beans>
